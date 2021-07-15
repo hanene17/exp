@@ -6,6 +6,7 @@ var path = require('path')
 let home=  require('./home');
 let service= require('./service')
 let contact= require('./contact')
+//let page401 = require('./page401')
 const isAuth= require('../middleware/auth')
 
 /* GET home page. */
@@ -13,38 +14,28 @@ router.get('/', home.get_home);
  router.get('/service', service.get_service);
  router.get('/contact', contact.get_contact);
 
-app.use(express.json()); //bodyparser
-router.use(isAuth);
-//https://www.linkedin.com/pulse/how-node-js-middleware-process-ayush-neekhra
-var requestTime = function (req, res, next) {
+ //app.use(app.router);
+ app.use('/', router);
+ app.use('/service', router);
+ app.use('/contact', router);
 
-    req.requestTime = Date.now()
-    
-    next()
-    
-    }
-    router.use(requestTime)
+app.use(express.json()); //bodyparser
+app.use(isAuth);
+//https://www.linkedin.com/pulse/how-node-js-middleware-process-ayush-neekhra
+
     // https://expressjs.com/fr/4x/api.html#res.sendFile
-   router.use(express.static(path.join(__dirname,  'views')))
-    //router.use(logger());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+    //app.use(cookieParser());
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'pug');
+    app.get('*', function(req, res){
+        res.status(401).render('page401.pug', {title: "Sorry, page not found"});
+      });
+   
+   //router.use(logger());
   
-  router.get('/',(req,res)=>{
-        res.sendFile(path.join(__dirname,  '/views/home.pug'))
-        var responseText = 'Requested at:';
-        responseText +=  req.requestTime + 'ms';
-        console.log(responseText)
-        })
-        router.get('/service',(req,res)=>{
-            res.sendFile(path.join(__dirname,  '/views/service.pug'))
-            var responseText = 'Requested at:';
-            responseText +=  req.requestTime + 'ms';
-            console.log(responseText)
-            })
-            router.get('/contact',(req,res)=>{
-                res.sendFile(path.join(__dirname,  '/views/contact.pug'))
-                var responseText = 'Requested at:';
-                responseText +=  req.requestTime + 'ms';
-                console.log(responseText)
-                })
+ 
 
  module.exports = router;
