@@ -1,19 +1,22 @@
 extends layout
 block content
-table(style='width:100%', border='1')
-  tr
-    th 1
-    th 2
-    th 3
-  tr
-    td 1
-    td 2
-    td 3
-  tr
-    td 1
-    td 2
-    td 3
-  tr
-    td 1
-    td 2
-    td 3
+.auth 
+    p you are not authorized come-back... soon
+    table( border='2')
+     tr
+      th 
+      th MOND-TUE-WED-THU-FRI
+      th SAT-SUN
+     tr
+      td working hours
+      td 9 00 AM - 05 00 PM
+      td CLOSED
+
+
+block footer  
+  .container
+     h3
+      |&copy; 2021 HanenTeam.All Rights Reserved  |
+      i.fa.fa-value(aria-hidden='true') &nbsp;
+      a(href='/') View Home  
+       
